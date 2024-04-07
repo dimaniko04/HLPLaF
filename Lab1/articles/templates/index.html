@@ -10,7 +10,7 @@
     {% if articles %}
         <ul>
             {% for article in articles %}
-                <li>{{ article.title }}</li>
+                {% include 'article_item.html' with article=article %}
             {% endfor %}
         </ul>
     {% else %}
