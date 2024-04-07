@@ -5,7 +5,7 @@
 
     <p>Are you sure you want to delete "{{ article.title }}"?</p>
 
-    <form method="post">
+    <form method="POST">
         {% csrf_token %}
         <a href="{% url 'articles:index' %}">Cancel</a>
         <button type="submit">Delete</button>

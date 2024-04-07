@@ -10,7 +10,7 @@
     {% if articles %}
         <ul>
             {% for article in articles %}
-                {% include 'article_item.html' with article=article %}
+                {% include 'articles/article_item.html' with article=article %}
             {% endfor %}
         </ul>
     {% else %}

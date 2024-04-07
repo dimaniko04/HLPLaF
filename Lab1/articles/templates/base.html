@@ -6,6 +6,12 @@
     <title>Lab 1</title>
 </head>
 <body>
+    {% if request.user.is_authenticated %}
+        <header>
+            <a href="{% url 'articles:logout' %}">Logout</a>
+        </header>
+    {% endif %}
+
     {% block content %}
         <h1>Hello World!</h1>
     {% endblock %}
