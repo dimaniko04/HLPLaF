@@ -1,11 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Login</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account yet? <a href="{% url 'articles:register' %}">Register</a></p>
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <h1 class="auth-header">Login</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% include 'input-field.html' with field=field %}
+                {% endfor %}
+                {% if form.non_field_errors %}
+                    <ul class='form-errors'>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <button type="submit" class="submit-button">Login</button>
+            </form>
+            <p class="auth-alternative">
+                Don't have an account yet?
+                <a href="{% url 'articles:register' %}">Register</a>
+            </p>
+        </div>
+    </div>
 {% endblock %}

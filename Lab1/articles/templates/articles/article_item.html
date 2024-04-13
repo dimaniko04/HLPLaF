@@ -1,10 +1,12 @@
 <li>
-    <div>
-        <time>{{ article.publish_date }}</time>
+    <div class="article-header">
+        <time>{{ article.publish_date|date:"d.m.Y" }}</time>
         <h3>{{ article.title }}</h3>
 
-        <a href="{% url 'articles:edit_article' article.id %}">Edit</a>
-        <a href="{% url 'articles:remove_article' article.id %}">Remove</a>
+        <div>
+            <a class="edit-article-link" href="{% url 'articles:edit_article' article.id %}">Edit</a>
+            <a class="remove-article-link" href="{% url 'articles:remove_article' article.id %}">Remove</a>
+        </div>
     </div>
     <p>{{ article.text }}</p>
 </li>

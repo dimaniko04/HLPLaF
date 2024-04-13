@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Register</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="{% url 'articles:login' %}">Login</a></p>
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <h1 class="auth-header">Register</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% include 'input-field.html' with field=field %}
+                {% endfor %}
+                <button type="submit" class="submit-button">Register</button>
+            </form>
+            <p class="auth-alternative">
+                Already have an account?
+                <a href="{% url 'articles:login' %}">Login</a>
+            </p>
+        </div>
+    </div>
 {% endblock %}

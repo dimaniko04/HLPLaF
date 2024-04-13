@@ -2,7 +2,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
 
 from articles.forms import ArticleForm
 from articles.models import Article
@@ -10,7 +9,7 @@ from articles.models import Article
 
 @login_required
 def index(request):
-    articles = Article.objects.all()
+    articles = Article.objects.order_by('-publish_date').all()
 
     return render(request, 'articles/index.html', {'articles': articles})
 

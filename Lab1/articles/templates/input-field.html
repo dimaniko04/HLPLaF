@@ -1,0 +1,7 @@
+<div class="input-field">
+    {{ field.label_tag }}
+    {{ field }}
+    {% for error in field.errors %}
+        <p class="input-error">{{ error }}</p>
+    {% endfor %}
+</div>

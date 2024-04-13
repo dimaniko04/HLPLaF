@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Articles:</h1>
-
-    <a href="{% url 'articles:create_article' %}">
+    <a href="{% url 'articles:create_article' %}" class="create-article-link">
         Create Article
     </a>
 
     {% if articles %}
-        <ul>
+        <ul class="article-list">
             {% for article in articles %}
                 {% include 'articles/article_item.html' with article=article %}
             {% endfor %}
         </ul>
     {% else %}
-        <p>No articles yet!</p>
+        <p class="no-articles-message">No articles yet!</p>
     {% endif %}
 
 {% endblock %}

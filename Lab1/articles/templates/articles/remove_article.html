@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Delete Article</h1>
+    <div class="delete-article-container">
+        <h1 class="delete-article-heading">Delete Article</h1>
 
-    <p>Are you sure you want to delete "{{ article.title }}"?</p>
+        <p class="delete-confirmation-text">Are you sure you want to delete "{{ article.title }}"?</p>
 
-    <form method="POST">
-        {% csrf_token %}
-        <a href="{% url 'articles:index' %}">Cancel</a>
-        <button type="submit">Delete</button>
-    </form>
+        <form method="POST">
+            {% csrf_token %}
+            <a href="{% url 'articles:index' %}" class="cancel-button">Cancel</a>
+            <button type="submit" class="delete-article-button">Delete</button>
+        </form>
+    </div>
 {% endblock %}
