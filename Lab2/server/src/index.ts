@@ -1,8 +1,10 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+
+import router from "./routes";
 import { shopDataSource } from "./db";
-import { Product } from "./entities/product";
+import { exceptionMiddleware } from "./middlewares/exceptionMiddleware";
 
 dotenv.config();
 
@@ -12,17 +14,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-app.get("/products", async (req, res) => {
-  const products = await shopDataSource.getRepository(Product).find();
-
-  res.json(products);
-});
+app.use("/api", router);
+app.use(exceptionMiddleware);
 
 const start = async () => {
   try {
     await shopDataSource.initialize();
-
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   } catch (error) {
     console.error(error);
