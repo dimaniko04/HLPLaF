@@ -2,8 +2,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Category } from "./category";
@@ -20,10 +20,14 @@ export class Product {
   @Column("decimal", { precision: 12, scale: 2 })
   price: number;
 
-  @OneToOne(() => Category)
+  @ManyToOne(() => Category, (category) => category.products, {
+    nullable: false,
+  })
   @JoinColumn()
   category: Category;
 
-  @OneToMany(() => ProductInfo, (productInfo) => productInfo.product)
+  @OneToMany(() => ProductInfo, (productInfo) => productInfo.product, {
+    cascade: true,
+  })
   productInfo: ProductInfo[];
 }

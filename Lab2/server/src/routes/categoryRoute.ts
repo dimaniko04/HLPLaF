@@ -8,7 +8,7 @@ router.get("/", categoryController.getAll);
 router.get("/:id", categoryController.getOne);
 router.post(
   "/",
-  body("name").trim().notEmpty().withMessage("Category name is required!"),
+  body("name", "Category name is required!").trim().notEmpty(),
   categoryController.create
 );
 router.delete("/:id", categoryController.delete);

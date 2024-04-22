@@ -12,6 +12,10 @@ export class ProductInfo {
   @Column()
   description: string;
 
-  @ManyToOne(() => Product, (product) => product)
+  @ManyToOne(() => Product, (product) => product, {
+    onDelete: "CASCADE",
+    nullable: false,
+    orphanedRowAction: "delete",
+  })
   product: Product;
 }
