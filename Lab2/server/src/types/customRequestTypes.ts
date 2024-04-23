@@ -1,4 +1,9 @@
 import { Request } from "express";
+import { UserDto } from "../dto/userDto";
+
+export interface RequestWithUser extends Request {
+  user: UserDto;
+}
 
 export interface ICreateCategory {
   name: string;
