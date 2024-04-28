@@ -6,6 +6,7 @@ import {
 } from "../types/customRequestTypes";
 import { validationResult } from "express-validator";
 import { ApiError } from "../exceptions/apiError";
+import { FileHelper } from "../utils/FileHelper";
 
 class ProductController {
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -31,10 +32,21 @@ class ProductController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        if (req.file) {
+          await FileHelper.removeFile(req.file?.filename);
+        }
         return next(ApiError.BadRequest("Validation failed", errors.array()));
       }
+      if (!req.file) {
+        return next(ApiError.BadRequest("Product image is required!"));
+      }
       const productToCreate = req.body;
-      const product = await productService.create(productToCreate);
+      const productImage = req.file.filename;
+
+      const product = await productService.create({
+        ...productToCreate,
+        img: productImage,
+      });
       res.status(201).json(product);
     } catch (err) {
       next(err);
@@ -53,13 +65,21 @@ class ProductController {
 
   async update(req: UpdateProductRequest, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id);
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        if (req.file) {
+          await FileHelper.removeFile(req.file?.filename);
+        }
         return next(ApiError.BadRequest("Validation failed", errors.array()));
       }
       const updateProduct = req.body;
-      const product = await productService.update(id, updateProduct);
+      const productImage = req.file?.filename;
+
+      const product = await productService.update(id, {
+        ...updateProduct,
+        img: productImage,
+      });
       res.status(200).json(product);
     } catch (err) {
       next(err);

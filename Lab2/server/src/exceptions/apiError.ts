@@ -21,4 +21,8 @@ export class ApiError extends Error {
   static UnauthorizedError() {
     return new ApiError(401, "User is not authorized");
   }
+
+  static UnsupportedMedia(message: string, errors: ValidationError[] = []) {
+    return new ApiError(415, message, errors);
+  }
 }

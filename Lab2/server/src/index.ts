@@ -1,4 +1,5 @@
 import cors from "cors";
+import path from "path";
 import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -13,9 +14,10 @@ const PORT = Number(process.env.PORT) | 5000;
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use("/api", express.static(path.resolve(__dirname, "static")));
 app.use("/api", router);
 app.use(exceptionMiddleware);
 

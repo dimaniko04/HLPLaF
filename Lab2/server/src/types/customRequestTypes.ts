@@ -23,4 +23,4 @@ export interface ICreateProduct {
 
 export type CreateCategoryRequest = Request<{}, {}, ICreateCategory>;
 export type CreateProductRequest = Request<{}, {}, ICreateProduct>;
-export type UpdateProductRequest = Request<{ id: number }, {}, ICreateProduct>;
+export type UpdateProductRequest = Request<{ id: string }, {}, ICreateProduct>;

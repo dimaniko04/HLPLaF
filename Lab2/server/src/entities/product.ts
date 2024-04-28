@@ -20,6 +20,9 @@ export class Product {
   @Column("decimal", { precision: 12, scale: 2 })
   price: number;
 
+  @Column()
+  img: string;
+
   @ManyToOne(() => Category, (category) => category.products, {
     nullable: false,
   })

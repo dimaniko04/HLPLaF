@@ -4,6 +4,7 @@ import { Product } from "../entities/product";
 import { ApiError } from "../exceptions/apiError";
 import { ICreateProduct } from "../types/customRequestTypes";
 import { categoryService } from "./categoryService";
+import { FileHelper } from "../utils/FileHelper";
 
 class ProductService {
   readonly productRepo: Repository<Product>;
@@ -34,7 +35,7 @@ class ProductService {
     return product;
   }
 
-  async create(createProduct: ICreateProduct) {
+  async create(createProduct: ICreateProduct & { img: string }) {
     const isExists = await this.productRepo.findOne({
       where: { name: createProduct.name },
     });
@@ -58,10 +59,11 @@ class ProductService {
     if (!product) {
       throw ApiError.BadRequest(`No product with id ${id}`);
     }
+    await FileHelper.removeFile(product.img);
     return this.productRepo.delete(id);
   }
 
-  async update(id: number, updateProduct: ICreateProduct) {
+  async update(id: number, updateProduct: ICreateProduct & { img?: string }) {
     const product = await this.productRepo.findOne({
       where: { id: id },
     });
@@ -78,6 +80,11 @@ class ProductService {
       throw ApiError.BadRequest(
         `Product with name ${updateProduct.name} already exists`
       );
+    }
+    if (updateProduct.img) {
+      await FileHelper.removeFile(product.img);
+    } else {
+      updateProduct.img = product.img;
     }
 
     const category = await categoryService.getOne(updateProduct.category);

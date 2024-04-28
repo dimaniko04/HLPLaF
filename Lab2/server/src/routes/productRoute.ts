@@ -1,6 +1,7 @@
 import express from "express";
 import { productController } from "../controllers";
 import { body } from "express-validator";
+import { multerMiddleware } from "../middlewares/multerMiddleware";
 
 const router = express.Router();
 
@@ -8,27 +9,33 @@ router.get("/", productController.getAll);
 router.get("/:id", productController.getOne);
 router.post(
   "/",
-  body("name", "Product name is required!").trim().notEmpty(),
-  body("price").isDecimal().withMessage("Price must be a decimal number!"),
-  body("category", "Product category is required!").trim().notEmpty(),
-  body("productInfo", "Product info is required!").isArray({ min: 1 }),
-  body("productInfo.*.title", "Title is required!").trim().notEmpty(),
-  body("productInfo.*.description", "Description is required!")
-    .trim()
-    .notEmpty(),
+  multerMiddleware.single("img"),
+  [
+    body("name", "Product name is required!").trim().notEmpty(),
+    body("price").isDecimal().withMessage("Price must be a decimal number!"),
+    body("category", "Product category is required!").trim().notEmpty(),
+    body("productInfo", "Product info is required!").isArray({ min: 1 }),
+    body("productInfo.*.title", "Title is required!").trim().notEmpty(),
+    body("productInfo.*.description", "Description is required!")
+      .trim()
+      .notEmpty(),
+  ],
   productController.create
 );
 router.delete("/:id", productController.delete);
 router.put(
   "/:id",
-  body("name", "Product name is required!").trim().notEmpty(),
-  body("price").isDecimal().withMessage("Price must be a decimal number!"),
-  body("category", "Product category is required!").trim().notEmpty(),
-  body("productInfo", "Product info is required!").isArray({ min: 1 }),
-  body("productInfo.*.title", "Title is required!").trim().notEmpty(),
-  body("productInfo.*.description", "Description is required!")
-    .trim()
-    .notEmpty(),
+  multerMiddleware.single("img"),
+  [
+    body("name", "Product name is required!").trim().notEmpty(),
+    body("price").isDecimal().withMessage("Price must be a decimal number!"),
+    body("category", "Product category is required!").trim().notEmpty(),
+    body("productInfo", "Product info is required!").isArray({ min: 1 }),
+    body("productInfo.*.title", "Title is required!").trim().notEmpty(),
+    body("productInfo.*.description", "Description is required!")
+      .trim()
+      .notEmpty(),
+  ],
   productController.update
 );
 
