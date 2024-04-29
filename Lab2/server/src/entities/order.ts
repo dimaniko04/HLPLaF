@@ -9,6 +9,15 @@ import {
 import { User } from "./user";
 import { OrderDetails } from "./orderDetails";
 
+export enum OrderStatus {
+  PROCESSING = "processing",
+  AWAITING_DISPATCH = "awaiting dispatch",
+  DELIVERING = "delivering",
+  READY_FOR_PICKUP = "ready for pickup",
+  RECEIVED = "received",
+  CANCELLED = "cancelled",
+}
+
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn()
@@ -16,6 +25,13 @@ export class Order {
 
   @Column()
   userId: number;
+
+  @Column({
+    type: "enum",
+    enum: OrderStatus,
+    default: OrderStatus.PROCESSING,
+  })
+  status: OrderStatus;
 
   @ManyToOne(() => User, (user) => user.orders, {
     nullable: false,

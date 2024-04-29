@@ -1,9 +1,10 @@
 import { Repository } from "typeorm";
 import { shopDataSource } from "../db";
-import { Order } from "../entities/order";
+import { Order, OrderStatus } from "../entities/order";
 import { OrderDto } from "../dto/orderDto";
 import { ICreateOrder } from "./../types/customRequestTypes";
 import { productService } from "./productService";
+import { ApiError } from "../exceptions/apiError";
 
 class OrderService {
   readonly orderRepo: Repository<Order>;
@@ -39,6 +40,17 @@ class OrderService {
     const newOrder = this.orderRepo.create(createOrder);
 
     return this.orderRepo.save(newOrder);
+  }
+
+  async updateStatus(id: number, status: OrderStatus) {
+    const order = await this.orderRepo.findOne({ where: { id } });
+
+    if (!order) {
+      throw ApiError.BadRequest(`No order with id ${id}`);
+    }
+    order.status = status;
+
+    return this.orderRepo.save(order);
   }
 }
 

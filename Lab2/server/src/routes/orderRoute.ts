@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { orderController } from "../controllers";
 import { body } from "express-validator";
+import { OrderStatus } from "../entities/order";
 
 const router = Router();
 
@@ -18,6 +19,15 @@ router.post(
     ).isNumeric(),
   ],
   orderController.createForCurrentUser
+);
+router.put("/:id/cancel", orderController.cancel);
+router.put(
+  "/:id/status",
+  body(
+    "status",
+    `Invalid status, valid order statuses: ${Object.values(OrderStatus)}`
+  ).isIn(Object.values(OrderStatus)),
+  orderController.updateStatus
 );
 
 export default router;
