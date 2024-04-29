@@ -21,6 +21,15 @@ export interface ICreateProduct {
   productInfo: ICreateProductInfo[];
 }
 
+export interface ICreateOrder {
+  userId: number;
+  orderDetails: {
+    productId: number;
+    quantity: number;
+  }[];
+}
+
 export type CreateCategoryRequest = Request<{}, {}, ICreateCategory>;
 export type CreateProductRequest = Request<{}, {}, ICreateProduct>;
 export type UpdateProductRequest = Request<{ id: string }, {}, ICreateProduct>;
+export type CreateOrderRequest = Request<{}, {}, Omit<ICreateOrder, "userId">>;

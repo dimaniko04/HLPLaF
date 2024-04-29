@@ -1,4 +1,4 @@
-import { Not, Repository } from "typeorm";
+import { In, Not, Repository } from "typeorm";
 import { shopDataSource } from "../db";
 import { Product } from "../entities/product";
 import { ApiError } from "../exceptions/apiError";
@@ -33,6 +33,21 @@ class ProductService {
       throw ApiError.BadRequest(`No product with id ${id}`);
     }
     return product;
+  }
+
+  async getByIds(ids: number[]) {
+    const products = await shopDataSource
+      .getRepository(Product)
+      .find({ where: { id: In(ids) } });
+
+    if (products.length != ids.length) {
+      const existingIds = products.map((p) => p.id);
+      const nonExistentIds = ids.filter((id) => !existingIds.includes(id));
+
+      throw ApiError.BadRequest(`No product(s) with id(s) ${nonExistentIds}`);
+    }
+
+    return products;
   }
 
   async create(createProduct: ICreateProduct & { img: string }) {
