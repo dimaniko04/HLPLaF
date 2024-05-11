@@ -9,6 +9,7 @@ declare global {
       DB_PORT?: string;
       JWT_ACCESS_SECRET: string;
       JWT_REFRESH_SECRET: string;
+      CLIENT_URL: string;
     }
   }
 }
