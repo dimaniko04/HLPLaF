@@ -10,7 +10,7 @@ export default class UserStore {
   rootStore: RootStore;
 
   user = {} as IUser;
-  isAuth = true;
+  isAuth = false;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -79,7 +79,6 @@ export default class UserStore {
       this.setToken(response.data);
     } catch (e) {
       console.log(e);
-      this.setToken(null);
     }
   };
 }

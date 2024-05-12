@@ -34,7 +34,6 @@ api.interceptors.response.use(
 
         return api.request(originalRequest);
       } catch (err) {
-        //TODO handle unauthorized error
         console.log(err);
       }
     }

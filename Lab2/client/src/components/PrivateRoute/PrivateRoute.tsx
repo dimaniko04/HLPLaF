@@ -15,5 +15,5 @@ export const PrivateRoute = ({
     return <Navigate to={redirect} replace />;
   }
 
-  return children ? children : <Outlet />;
+  return children || <Outlet />;
 };

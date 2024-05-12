@@ -30,7 +30,7 @@ export default class UiStore {
 
   handleFetchError = (error: unknown) => {
     if (isAxiosError(error)) {
-      const status = error.status || error.response?.status;
+      const status = error.status ?? error.response?.status;
 
       if (status && status >= 400 && status < 500) {
         this.setFetchError(error.response?.data.message || error.message);

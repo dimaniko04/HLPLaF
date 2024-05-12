@@ -41,7 +41,7 @@ class AuthController {
       const { refreshToken } = req.cookies;
       await authService.logout(refreshToken);
       res.clearCookie("refreshToken");
-      return res.status(200);
+      return res.status(200).send({});
     } catch (err) {
       next(err);
     }
