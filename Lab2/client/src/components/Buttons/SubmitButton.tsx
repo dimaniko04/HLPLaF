@@ -1,4 +1,4 @@
-import { Spinner } from "../Spinner";
+import { Spinner } from "../Loaders";
 
 interface Props {
   text: string;

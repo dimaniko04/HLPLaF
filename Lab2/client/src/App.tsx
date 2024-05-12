@@ -7,6 +7,7 @@ import { useStoreContext } from "./store";
 import { Registration } from "./pages/Registration";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Header } from "./components/Header";
+import { Products } from "./pages/Products";
 
 export const App = observer(() => {
   const {
@@ -26,11 +27,12 @@ export const App = observer(() => {
         <Route
           element={
             <>
-              <Header /> <Outlet />
+              <Header />
+              <Outlet />
             </>
           }
         >
-          <Route index element={<h1>Products</h1>} />
+          <Route index element={<Products />} />
         </Route>
       </Route>
       <Route element={isAuth ? <Navigate to="/" /> : null}>
