@@ -65,6 +65,7 @@ export default class UserStore {
     try {
       await AuthService.logout();
       this.setToken(null);
+      localStorage.removeItem("cart");
     } catch (err) {
       console.log(err);
     }

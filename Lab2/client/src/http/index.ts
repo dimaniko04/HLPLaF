@@ -34,6 +34,7 @@ api.interceptors.response.use(
 
         return api.request(originalRequest);
       } catch (err) {
+        localStorage.removeItem("cart");
         console.log(err);
       }
     }
