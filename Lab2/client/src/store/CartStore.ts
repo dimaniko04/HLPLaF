@@ -20,11 +20,10 @@ export default class CartStore {
         (sum, item) => sum + Number(item.product.price) * item.quantity,
         0
       )
-      .toPrecision(2);
+      .toFixed(2);
   }
 
   constructor() {
-    console.log("constructor!");
     const cartJSON = localStorage.getItem("cart");
 
     if (cartJSON) {

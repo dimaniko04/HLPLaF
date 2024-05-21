@@ -8,6 +8,7 @@ import { Registration } from "./pages/Registration";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Header } from "./components/Header";
 import { Products } from "./pages/Products";
+import { Orders } from "./pages/Orders";
 
 export const App = observer(() => {
   const {
@@ -32,7 +33,9 @@ export const App = observer(() => {
             </>
           }
         >
-          <Route index element={<Products />} />
+          <Route index element={<Navigate to="products" />} />
+          <Route path="products" element={<Products />} />
+          <Route path="orders" element={<Orders />} />
         </Route>
       </Route>
       <Route element={isAuth ? <Navigate to="/" /> : null}>

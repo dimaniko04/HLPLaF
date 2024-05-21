@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 
@@ -28,8 +28,46 @@ export const Header = observer(() => {
                 </Link>
               </div>
 
+              <div className="ml-8 flex h-full space-x-8">
+                <NavLink
+                  to="products"
+                  className={({ isActive }) =>
+                    "flex border-b-2 " +
+                    (isActive
+                      ? "border-indigo-600 text-indigo-600"
+                      : "border-transparent text-gray-700 hover:text-gray-800")
+                  }
+                >
+                  <button
+                    type="button"
+                    className={
+                      "relative z-10 -mb-px pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                    }
+                  >
+                    Products
+                  </button>
+                </NavLink>
+
+                <NavLink
+                  to="orders"
+                  className={({ isActive }) =>
+                    "flex border-b-2 " +
+                    (isActive
+                      ? "border-indigo-600 text-indigo-600"
+                      : "border-transparent text-gray-700 hover:text-gray-800")
+                  }
+                >
+                  <button
+                    type="button"
+                    className="z-10 -mb-px pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                  >
+                    Orders
+                  </button>
+                </NavLink>
+              </div>
+
               <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                <div className="flex flex-1 items-center justify-end space-x-6">
                   <button
                     onClick={() => logout()}
                     className="text-sm font-medium text-gray-700 hover:text-gray-800"
