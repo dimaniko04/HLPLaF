@@ -30,17 +30,10 @@ export default class OrderStore {
     }
   };
 
-  checkout = async () => {
+  checkout = async (checkout: ICheckout) => {
     this.rootStore.uiStore.setIsPosting(true);
     try {
-      const cartItems = this.rootStore.cartStore.items;
-      const order: ICheckout = {
-        orderDetails: cartItems.map((item) => ({
-          productId: item.product.id,
-          quantity: item.quantity,
-        })),
-      };
-      await OrderService.checkout(order);
+      await OrderService.checkout(checkout);
       this.rootStore.cartStore.clearCart();
     } catch (error) {
       this.rootStore.uiStore.handlePostError(error);

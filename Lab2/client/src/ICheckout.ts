@@ -1,6 +1,11 @@
+export interface IOrderedProduct {
+  productId: number;
+  quantity: number;
+}
+
 export interface ICheckout {
-  orderDetails: {
-    productId: number;
-    quantity: number;
-  }[];
+  address: string;
+  lastName: string;
+  firstName: string;
+  orderDetails: IOrderedProduct[];
 }

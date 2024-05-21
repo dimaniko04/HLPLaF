@@ -15,7 +15,7 @@ export const Orders = observer(() => {
   }, []);
 
   return (
-    <div className="max-w-5xl m-auto mt-14 px-10">
+    <div className="max-w-5xl m-auto mt-14 px-10 pb-10">
       <h1 className="text-3xl tracking-tight font-bold mb-10 text-gray-900">
         Order history
       </h1>

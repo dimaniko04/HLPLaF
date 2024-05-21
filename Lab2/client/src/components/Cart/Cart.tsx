@@ -1,23 +1,16 @@
+import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { CloseButton, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { CloseButton, DialogTitle } from "@headlessui/react";
 
 import { CartItem } from "./CartItem";
 import { CartWrapper } from "./CartWrapper";
 import { useStoreContext } from "../../store";
-import { Spinner } from "../Loaders";
-import { useEffect } from "react";
 
 export const Cart = observer(() => {
   const {
-    orderStore: { checkout },
-    uiStore: { isPosting, postError, setPostError },
-    cartStore: { totalPrice, items, removeFromCart },
+    cartStore: { totalPrice, items, removeFromCart, closeCartDrawer },
   } = useStoreContext();
-
-  useEffect(() => {
-    return () => setPostError(null);
-  });
 
   return (
     <CartWrapper>
@@ -58,13 +51,13 @@ export const Cart = observer(() => {
             <p>Total</p>
             <p>${totalPrice}</p>
           </div>
-          {postError && <h1 className="text-red-600">{postError}</h1>}
-          <button
-            className="mt-6 w-full rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-            onClick={checkout}
+          <Link
+            onClick={closeCartDrawer}
+            to="checkout"
+            className="flex flex-col items-center mt-6 w-full rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
           >
-            {isPosting ? <Spinner /> : "Checkout"}
-          </button>
+            Checkout
+          </Link>
         </div>
       </div>
     </CartWrapper>

@@ -15,7 +15,7 @@ interface Props {
 export const AuthForm = observer(({ mode }: Props) => {
   const {
     userStore: { login, registration },
-    uiStore: { isPosting, setIsPosting, postError, setPostError },
+    uiStore: { isPosting, postError, setPostError },
   } = useStoreContext();
 
   useEffect(() => {
@@ -37,7 +37,6 @@ export const AuthForm = observer(({ mode }: Props) => {
         isLogin ? loginFormValidation : registrationFormValidation
       }
       onSubmit={async (values, { setSubmitting }) => {
-        setIsPosting(true);
         try {
           const { email, password } = values;
           if (isLogin) {
@@ -47,7 +46,6 @@ export const AuthForm = observer(({ mode }: Props) => {
           }
         } finally {
           setSubmitting(false);
-          setIsPosting(false);
         }
       }}
     >
