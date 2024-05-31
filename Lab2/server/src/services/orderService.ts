@@ -5,6 +5,7 @@ import { OrderDto } from "../dto/orderDto";
 import { ICreateOrder } from "./../types/customRequestTypes";
 import { productService } from "./productService";
 import { ApiError } from "../exceptions/apiError";
+import { toPaginatedList } from "../utils/toPaginatedList";
 
 class OrderService {
   readonly orderRepo: Repository<Order>;
@@ -13,8 +14,8 @@ class OrderService {
     this.orderRepo = shopDataSource.getRepository(Order);
   }
 
-  async getForUser(userId: number) {
-    const userOrders = await this.orderRepo.find({
+  async getForUser(userId: number, page: number, limit: number) {
+    const [userOrders, total] = await this.orderRepo.findAndCount({
       relations: {
         orderDetails: {
           product: {
@@ -27,10 +28,12 @@ class OrderService {
           id: userId,
         },
       },
+      take: limit,
+      skip: (page - 1) * limit,
     });
     const userOrderDtos = userOrders.map((o) => new OrderDto(o));
 
-    return userOrderDtos;
+    return toPaginatedList(userOrderDtos, total, page, limit);
   }
 
   async create(createOrder: ICreateOrder) {

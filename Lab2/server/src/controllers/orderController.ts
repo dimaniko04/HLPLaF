@@ -3,6 +3,7 @@ import { orderService } from "../services";
 import { RequestAssertions } from "../utils/assertions/requestAssertions";
 import {
   CreateOrderRequest,
+  PaginatedRequest,
   UpdateOrderStatusRequest,
 } from "../types/customRequestTypes";
 import { ApiError } from "../exceptions/apiError";
@@ -15,7 +16,9 @@ class OrderController {
     try {
       RequestAssertions.assertIsRequestWithUser(req);
       const { id } = req.user;
-      const orders = await orderService.getForUser(id);
+      const { page = 1, limit = 2 } = (req as unknown as PaginatedRequest)
+        .query;
+      const orders = await orderService.getForUser(id, page, limit);
       res.status(200).json(orders);
     } catch (err) {
       next(err);

@@ -2,6 +2,7 @@ import { Transition } from "@headlessui/react";
 import { API_URL } from "../../http";
 import { IProduct } from "../../models/IProduct";
 import { useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface Props {
   product: IProduct;
@@ -30,7 +31,7 @@ export const CartItem = ({ product, quantity, remove }: Props) => {
     >
       <li key={product.id} className="flex py-6">
         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-          <img
+          <LazyLoadImage
             src={`${API_URL}/${product.img}`}
             className="h-full w-full object-cover object-center"
           />

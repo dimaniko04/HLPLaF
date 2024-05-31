@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { useStoreContext } from "../store";
 import { CheckoutForm } from "../components/CheckoutForm";
 
-export const Checkout = observer(() => {
+const Checkout = observer(() => {
   const {
     cartStore: { items },
   } = useStoreContext();
@@ -19,3 +19,5 @@ export const Checkout = observer(() => {
     </div>
   );
 });
+
+export default Checkout;

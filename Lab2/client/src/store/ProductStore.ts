@@ -2,10 +2,14 @@ import { makeAutoObservable } from "mobx";
 import { RootStore } from "./RootStore";
 import { IProduct } from "../models/IProduct";
 import ProductService from "../services/ProductService";
+import { PaginatedResponse } from "../models/response/PaginatedResponse";
 
 export default class ProductStore {
   rootStore: RootStore;
 
+  page = 1;
+  limit = 10;
+  pageCount = 0;
   products: IProduct[] = [];
 
   constructor(rootStore: RootStore) {
@@ -17,11 +21,18 @@ export default class ProductStore {
     this.products = products;
   };
 
-  fetchProducts = async () => {
+  setPagination = (pagination: Omit<PaginatedResponse<unknown>, "items">) => {
+    this.page = pagination.page;
+    this.limit = pagination.limit;
+    this.pageCount = pagination.pageCount;
+  };
+
+  fetchProducts = async (page = 1, limit = 10) => {
     this.rootStore.uiStore.setIsFetching(true);
     try {
-      const response = await ProductService.fetchProducts();
-      this.setProducts(response.data);
+      const response = await ProductService.fetchProducts(page, limit);
+      this.setProducts(response.data.items);
+      this.setPagination(response.data);
     } catch (e) {
       this.rootStore.uiStore.handleFetchError(e);
     } finally {

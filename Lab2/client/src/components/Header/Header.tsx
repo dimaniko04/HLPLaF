@@ -1,10 +1,14 @@
-import { Link, NavLink } from "react-router-dom";
+import { lazy } from "react";
+import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import logo from "../../assets/logo.svg";
 import { useStoreContext } from "../../store";
-import { Cart } from "../Cart";
+import { HeaderNavLink } from "./HeaderNavLink";
+
+const Cart = lazy(() => import("../Cart"));
 
 export const Header = observer(() => {
   const {
@@ -24,46 +28,17 @@ export const Header = observer(() => {
               <div className="ml-4 flex lg:ml-0">
                 <Link to="/">
                   <span className="sr-only">Your Company</span>
-                  <img className="h-8 w-auto" src={logo} alt="" />
+                  <LazyLoadImage
+                    className="h-8 min-w-20 w-auto"
+                    src={logo}
+                    alt=""
+                  />
                 </Link>
               </div>
 
               <div className="ml-8 flex h-full space-x-8">
-                <NavLink
-                  to="products"
-                  className={({ isActive }) =>
-                    "flex border-b-2 " +
-                    (isActive
-                      ? "border-indigo-600 text-indigo-600"
-                      : "border-transparent text-gray-700 hover:text-gray-800")
-                  }
-                >
-                  <button
-                    type="button"
-                    className={
-                      "relative z-10 -mb-px pt-px text-sm font-medium transition-colors duration-200 ease-out"
-                    }
-                  >
-                    Products
-                  </button>
-                </NavLink>
-
-                <NavLink
-                  to="orders"
-                  className={({ isActive }) =>
-                    "flex border-b-2 " +
-                    (isActive
-                      ? "border-indigo-600 text-indigo-600"
-                      : "border-transparent text-gray-700 hover:text-gray-800")
-                  }
-                >
-                  <button
-                    type="button"
-                    className="z-10 -mb-px pt-px text-sm font-medium transition-colors duration-200 ease-out"
-                  >
-                    Orders
-                  </button>
-                </NavLink>
+                <HeaderNavLink to="products" text="Products" />
+                <HeaderNavLink to="orders" text="Orders" />
               </div>
 
               <div className="ml-auto flex items-center">
@@ -96,8 +71,8 @@ export const Header = observer(() => {
             </div>
           </div>
         </nav>
+        <Cart />
       </header>
-      <Cart />
     </div>
   );
 });

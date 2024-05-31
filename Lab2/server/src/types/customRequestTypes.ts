@@ -30,6 +30,13 @@ export interface ICreateOrder {
   }[];
 }
 
+export interface IPaginationParams {
+  page: number;
+  limit: number;
+}
+
+export type PaginatedRequest = Request<{}, {}, {}, IPaginationParams>;
+
 export type CreateCategoryRequest = Request<{}, {}, ICreateCategory>;
 export type CreateProductRequest = Request<{}, {}, ICreateProduct>;
 export type UpdateProductRequest = Request<{ id: string }, {}, ICreateProduct>;

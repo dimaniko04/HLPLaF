@@ -5,6 +5,7 @@ import { ApiError } from "../exceptions/apiError";
 import { ICreateProduct } from "../types/customRequestTypes";
 import { categoryService } from "./categoryService";
 import { FileHelper } from "../utils/FileHelper";
+import { toPaginatedList } from "../utils/toPaginatedList";
 
 class ProductService {
   readonly productRepo: Repository<Product>;
@@ -13,12 +14,16 @@ class ProductService {
     this.productRepo = shopDataSource.getRepository(Product);
   }
 
-  async getAll() {
-    return this.productRepo.find({
+  async getAll(page: number, limit: number) {
+    const [products, total] = await this.productRepo.findAndCount({
       relations: {
         productInfo: true,
       },
+      skip: (page - 1)  * limit,
+      take: limit,
     });
+
+    return toPaginatedList(products, total, page, limit);
   }
 
   async getOne(id: number) {

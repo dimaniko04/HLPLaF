@@ -2,11 +2,13 @@ import { isAxiosError } from "axios";
 import { makeAutoObservable } from "mobx";
 
 export default class UiStore {
-  isFetching: boolean = false;
   isPosting: boolean = false;
+  isFetching: boolean = false;
+  isFetchingNext: boolean = false;
 
-  fetchError: string | null = null;
   postError: string | null = null;
+  fetchError: string | null = null;
+  fetchNextError: string | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -14,6 +16,10 @@ export default class UiStore {
 
   setIsFetching = (isFetching: boolean) => {
     this.isFetching = isFetching;
+  };
+
+  setIsFetchingNext = (isFetchingNext: boolean) => {
+    this.isFetchingNext = isFetchingNext;
   };
 
   setIsPosting = (isPosting: boolean) => {
@@ -24,31 +30,38 @@ export default class UiStore {
     this.fetchError = fetchError;
   };
 
+  setFetchNextError = (fetchNextError: string | null) => {
+    this.fetchNextError = fetchNextError;
+  };
+
   setPostError = (postError: string | null) => {
     this.postError = postError;
   };
 
-  handleFetchError = (error: unknown) => {
+  private handleError = (
+    error: unknown,
+    setError: (message: string) => void
+  ) => {
     if (isAxiosError(error)) {
       const status = error.status ?? error.response?.status;
 
       if (status && status >= 400 && status < 500) {
-        this.setFetchError(error.response?.data.message || error.message);
+        setError(error.response?.data.message || error.message);
         return;
       }
     }
     this.setFetchError("Internal server error");
   };
 
-  handlePostError = (error: unknown) => {
-    if (isAxiosError(error)) {
-      const status = error.status ?? error.response?.status;
+  handleFetchError = (error: unknown) => {
+    this.handleError(error, this.setFetchError);
+  };
 
-      if (status && status >= 400 && status < 500) {
-        this.setPostError(error.response?.data.message || error.message);
-        return;
-      }
-    }
-    this.setPostError("Internal server error");
+  handlePostError = (error: unknown) => {
+    this.handleError(error, this.setPostError);
+  };
+
+  handleFetchNextError = (error: unknown) => {
+    this.handleError(error, this.setFetchNextError);
   };
 }

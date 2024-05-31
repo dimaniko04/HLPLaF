@@ -1,18 +1,43 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { useStoreContext } from "../store";
 import { FetchWrapper } from "../components/FetchWrapper";
 import { OrderItem } from "../components/OrderItem";
+import { Dots } from "../components/Loaders";
 
-export const Orders = observer(() => {
+const Orders = observer(() => {
   const {
-    orderStore: { orders, fetchOrders },
+    orderStore: { orders, fetchOrders, fetchNextPage, page, pageCount },
+    uiStore: { isFetchingNext, setFetchError },
   } = useStoreContext();
+
+  const handleScroll = useCallback(() => {
+    if (page == pageCount) {
+      return;
+    }
+    const scrolledHeight =
+      window.innerHeight + document.documentElement.scrollTop;
+    const offsetHeight = document.documentElement.scrollHeight;
+    if (scrolledHeight < offsetHeight - 72 || isFetchingNext) {
+      return;
+    }
+    fetchNextPage(page + 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, pageCount]);
 
   useEffect(() => {
     fetchOrders();
+    return () => {
+      setFetchError(null);
+      window.removeEventListener("scroll", handleScroll);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   return (
     <div className="max-w-5xl m-auto mt-14 px-10 pb-10">
@@ -28,7 +53,11 @@ export const Orders = observer(() => {
             <OrderItem key={order.id} order={order} />
           ))}
         </ul>
+
+        {isFetchingNext && <Dots />}
       </FetchWrapper>
     </div>
   );
 });
+
+export default Orders;

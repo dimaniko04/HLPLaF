@@ -1,10 +1,10 @@
 import { Form, Formik } from "formik";
+import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import { InputField } from "../Input";
 import { loginFormValidation } from "./utils/LoginFormValidation";
 import { useStoreContext } from "../../store";
-import { useEffect } from "react";
 import { SubmitButton } from "../Buttons";
 import { registrationFormValidation } from "./utils/RegistrationFormValidation";
 

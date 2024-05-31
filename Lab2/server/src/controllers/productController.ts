@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { productService } from "../services";
 import {
   CreateProductRequest,
+  PaginatedRequest,
   UpdateProductRequest,
 } from "../types/customRequestTypes";
 import { validationResult } from "express-validator";
@@ -9,9 +10,10 @@ import { ApiError } from "../exceptions/apiError";
 import { FileHelper } from "../utils/FileHelper";
 
 class ProductController {
-  async getAll(req: Request, res: Response, next: NextFunction) {
+  async getAll(req: PaginatedRequest, res: Response, next: NextFunction) {
     try {
-      const products = await productService.getAll();
+      const { page = 1, limit = 10 } = req.query;
+      const products = await productService.getAll(page, limit);
       res.status(200).json(products);
     } catch (err) {
       next(err);
