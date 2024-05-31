@@ -36,6 +36,8 @@ class OrderService {
     return toPaginatedList(userOrderDtos, total, page, limit);
   }
 
+  async getUserRecommendations() {}
+
   async create(createOrder: ICreateOrder) {
     const productIds = createOrder.orderDetails.map((od) => od.productId);
     await productService.getByIds(productIds);

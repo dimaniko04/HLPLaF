@@ -24,19 +24,24 @@ export const ProductItem = trackWindowScroll(
             alt=""
             scrollPosition={scrollPosition}
             src={`${API_URL}/${product.img}`}
-            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+            className="h-full w-full object-cover object-center  lg:h-full lg:w-full"
           />
         </div>
-        <div className="flex flex-row items-center justify-between mt-4">
-          <div>
-            <h3 className="text-sm text-gray-700">{product.name}</h3>
+        <div className="flex flex-row items-center justify-between mt-4 gap-x-2">
+          <div className="min-w-0">
+            <h3
+              title={product.name}
+              className="text-sm text-nowrap overflow-hidden text-ellipsis text-gray-700"
+            >
+              {product.name}
+            </h3>
             <p className="mt-1 text-lg font-medium text-gray-900">
               ${product.price}
             </p>
           </div>
           <button
             onClick={() => addToCart(product)}
-            className="rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none group-active:opacity-80"
+            className="flex-shrink-0 rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none group-active:opacity-80"
           >
             Add to cart
           </button>

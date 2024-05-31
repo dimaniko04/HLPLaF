@@ -11,6 +11,7 @@ const Header = lazy(() => import("./components/Header"));
 const Products = lazy(() => import("./pages/Products"));
 const Orders = lazy(() => import("./pages/Orders"));
 const Checkout = lazy(() => import("./pages/Checkout"));
+const Recommendations = lazy(() => import("./pages/Recommendations"));
 
 export const App = observer(() => {
   const {
@@ -36,7 +37,7 @@ export const App = observer(() => {
               </>
             }
           >
-            <Route index element={<Navigate to="products" />} />
+            <Route index element={<Recommendations />} />
             <Route path="products" element={<Products />} />
             <Route path="orders" element={<Orders />} />
             <Route path="checkout" element={<Checkout />} />
