@@ -33,7 +33,7 @@ export const Carousel = (props: PropsWithChildren<Props>) => {
       <button
         onClick={next}
         disabled={activeIndex == props.limit - 100 / 25}
-        className="flex items-center px-1 py-5 mr-6 border border-gray-400 rounded-md h-6 disabled:opacity-70 hover:bg-gray-100"
+        className="flex items-center px-1 py-5 mr-6 border border-gray-400 rounded-md h-6 disabled:opacity-50 disabled:hover:bg-transparent hover:bg-gray-100"
       >
         <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
       </button>

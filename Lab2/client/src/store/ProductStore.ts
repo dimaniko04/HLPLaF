@@ -11,6 +11,7 @@ export default class ProductStore {
   limit = 10;
   pageCount = 0;
   products: IProduct[] = [];
+  recommendations: IProduct[] = [];
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -19,6 +20,10 @@ export default class ProductStore {
 
   setProducts = (products: IProduct[]) => {
     this.products = products;
+  };
+
+  setRecommendations = (recommendations: IProduct[]) => {
+    this.recommendations = recommendations;
   };
 
   setPagination = (pagination: Omit<PaginatedResponse<unknown>, "items">) => {
@@ -33,6 +38,18 @@ export default class ProductStore {
       const response = await ProductService.fetchProducts(page, limit);
       this.setProducts(response.data.items);
       this.setPagination(response.data);
+    } catch (e) {
+      this.rootStore.uiStore.handleFetchError(e);
+    } finally {
+      this.rootStore.uiStore.setIsFetching(false);
+    }
+  };
+
+  fetchUserRecommendations = async () => {
+    this.rootStore.uiStore.setIsFetching(true);
+    try {
+      const response = await ProductService.fetchRecommendations();
+      this.setRecommendations(response.data);
     } catch (e) {
       this.rootStore.uiStore.handleFetchError(e);
     } finally {

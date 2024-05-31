@@ -8,13 +8,15 @@ import { Carousel } from "../components/Carousel/Carousel";
 
 const Recommendations = observer(() => {
   const {
-    productStore: { products, fetchProducts },
+    productStore: { recommendations, fetchUserRecommendations },
   } = useStoreContext();
 
   useEffect(() => {
-    fetchProducts();
+    fetchUserRecommendations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log(recommendations);
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-2 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -22,11 +24,11 @@ const Recommendations = observer(() => {
         Recommended for you
       </h1>
 
-      <FetchWrapper noItemsText="No Products!" items={products}>
+      <FetchWrapper noItemsText="No Recommendations!" items={recommendations}>
         <h2 className="sr-only">Products</h2>
 
-        <Carousel limit={10}>
-          {products.map((product) => (
+        <Carousel limit={recommendations.length}>
+          {recommendations.map((product) => (
             <ProductItem key={product.id} product={product} />
           ))}
         </Carousel>

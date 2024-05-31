@@ -28,6 +28,7 @@ class OrderService {
           id: userId,
         },
       },
+      order: { createdAt: "DESC" },
       take: limit,
       skip: (page - 1) * limit,
     });
@@ -35,8 +36,6 @@ class OrderService {
 
     return toPaginatedList(userOrderDtos, total, page, limit);
   }
-
-  async getUserRecommendations() {}
 
   async create(createOrder: ICreateOrder) {
     const productIds = createOrder.orderDetails.map((od) => od.productId);

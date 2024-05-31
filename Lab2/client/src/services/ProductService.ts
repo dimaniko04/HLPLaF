@@ -13,4 +13,8 @@ export default class ProductService {
       params: { page, limit },
     });
   }
+
+  static fetchRecommendations(): Promise<AxiosResponse<IProduct[]>> {
+    return api.get<IProduct[]>("/recommendations");
+  }
 }
