@@ -3,6 +3,8 @@ import categoryRouter from "./categoryRoute";
 import productRoute from "./productRoute";
 import authRoute from "./authRoute";
 import orderRoute from "./orderRoute";
+import reviewRoute from "./reviewRoute";
+
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { recommendationController } from "../controllers/recommendationController";
 
@@ -17,5 +19,6 @@ router.use(
   authMiddleware,
   recommendationController.getUserRecommendations
 );
+router.use("/product", authMiddleware, reviewRoute);
 
 export default router;

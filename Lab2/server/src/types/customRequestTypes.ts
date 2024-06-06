@@ -24,12 +24,31 @@ export interface ICreateOrder {
   }[];
 }
 
+export interface ICreateReview {
+  text: string;
+}
+
 export interface IPaginationParams {
   page: number;
   limit: number;
 }
 
 export type PaginatedRequest = Request<{}, {}, {}, IPaginationParams>;
+
+export type GetReviewsRequest = Request<
+  { productId: string },
+  {},
+  {},
+  IPaginationParams
+>;
+
+export type CreateReviewRequest = Request<
+  { productId: string },
+  {},
+  ICreateReview
+>;
+
+export type UpdateReviewRequest = Request<{ id: string }, {}, ICreateReview>;
 
 export type CreateCategoryRequest = Request<{}, {}, ICreateCategory>;
 export type CreateProductRequest = Request<{}, {}, ICreateProduct>;

@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "./order";
+import { Review } from "./review";
 
 @Entity()
 export class User {
@@ -16,4 +17,9 @@ export class User {
     cascade: true,
   })
   orders: Order[];
+
+  @OneToMany(() => Order, (order) => order.user, {
+    cascade: true,
+  })
+  reviews: Review[];
 }

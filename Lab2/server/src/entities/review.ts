@@ -2,23 +2,36 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./user";
+import { Product } from "./product";
 
 @Entity()
 export class Review {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @OneToOne(() => User, { nullable: false, onDelete: "CASCADE" })
-  @JoinColumn({ name: "userId" })
+  @ManyToOne(() => User, (user) => user.reviews, {
+    nullable: false,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
   user: User;
 
   @Column()
   userId: number;
+
+  @ManyToOne(() => Product, (product) => product.reviews, {
+    nullable: false,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  product: Product;
+
+  @Column()
+  productId: number;
 
   @Column()
   text: string;
