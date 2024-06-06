@@ -41,8 +41,6 @@ class RecommendationService {
       .where("row < 3")
       .getRawMany();
 
-    console.log(res);
-
     return res.map((item) => {
       const product = new Product();
       const category = new Category();

@@ -3,11 +3,9 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Category } from "./category";
-import { ProductInfo } from "./productInfo";
 
 @Entity()
 export class Product {
@@ -28,9 +26,4 @@ export class Product {
   })
   @JoinColumn()
   category: Category;
-
-  @OneToMany(() => ProductInfo, (productInfo) => productInfo.product, {
-    cascade: true,
-  })
-  productInfo: ProductInfo[];
 }

@@ -16,8 +16,6 @@ const Recommendations = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(recommendations);
-
   return (
     <div className="mx-auto max-w-2xl px-4 py-2 sm:px-6 lg:max-w-7xl lg:px-8">
       <h1 className="text-3xl tracking-tight font-bold mb-10 text-gray-900 mt-5">

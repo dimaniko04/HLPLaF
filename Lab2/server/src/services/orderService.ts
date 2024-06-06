@@ -18,9 +18,7 @@ class OrderService {
     const [userOrders, total] = await this.orderRepo.findAndCount({
       relations: {
         orderDetails: {
-          product: {
-            productInfo: true,
-          },
+          product: true,
         },
       },
       where: {

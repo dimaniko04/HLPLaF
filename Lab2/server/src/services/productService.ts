@@ -6,7 +6,6 @@ import { ICreateProduct } from "../types/customRequestTypes";
 import { categoryService } from "./categoryService";
 import { FileHelper } from "../utils/FileHelper";
 import { toPaginatedList } from "../utils/toPaginatedList";
-import { Order } from "../entities/order";
 
 class ProductService {
   readonly productRepo: Repository<Product>;
@@ -17,9 +16,6 @@ class ProductService {
 
   async getAll(page: number, limit: number) {
     const [products, total] = await this.productRepo.findAndCount({
-      relations: {
-        productInfo: true,
-      },
       skip: (page - 1) * limit,
       take: limit,
     });
@@ -30,29 +26,12 @@ class ProductService {
   async getOne(id: number) {
     const product = await this.productRepo.findOne({
       where: { id: id },
-      relations: {
-        productInfo: true,
-      },
     });
 
     if (!product) {
       throw ApiError.BadRequest(`No product with id ${id}`);
     }
     return product;
-  }
-
-  async getUserRecommendations(userId: number) {
-    const categories = await shopDataSource
-      .createQueryBuilder()
-      .from(Order, "order")
-      .innerJoin("order_details", "detail", "detail.orderId = order.id")
-      .innerJoin("products", "product", "detail.productId = product.id")
-      .innerJoin("categories", "category", "product.categoryId = category.id")
-      .orderBy("order.createdAt", "DESC")
-      .select("category.name")
-      .getMany();
-
-    console.log(categories);
   }
 
   async getByIds(ids: number[]) {

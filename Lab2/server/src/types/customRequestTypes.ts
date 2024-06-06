@@ -10,16 +10,10 @@ export interface ICreateCategory {
   name: string;
 }
 
-export interface ICreateProductInfo {
-  title: string;
-  description: string;
-}
-
 export interface ICreateProduct {
   name: string;
   price: number;
   category: number;
-  productInfo: ICreateProductInfo[];
 }
 
 export interface ICreateOrder {

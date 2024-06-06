@@ -12,7 +12,7 @@ const Orders = observer(() => {
   } = useStoreContext();
 
   const handleScroll = useCallback(() => {
-    if (page == pageCount) {
+    if (page >= pageCount) {
       return;
     }
     const scrolledHeight =
