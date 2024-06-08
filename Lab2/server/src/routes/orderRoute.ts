@@ -20,7 +20,7 @@ router.post(
   ],
   orderController.createForCurrentUser
 );
-router.put("/:id/cancel", orderController.cancel);
+router.delete("/:id/cancel", orderController.cancel);
 router.put(
   "/:id/status",
   body(
