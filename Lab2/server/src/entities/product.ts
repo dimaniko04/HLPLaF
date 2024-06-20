@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { Category } from "./category";
 import { Review } from "./review";
+import { Favorite } from "./favorite";
 
 @Entity()
 export class Product {
@@ -33,4 +34,9 @@ export class Product {
     cascade: true,
   })
   reviews: Review[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.product, {
+    cascade: true,
+  })
+  favorites: Favorite[];
 }

@@ -6,6 +6,9 @@ import { ICreateProduct } from "../types/customRequestTypes";
 import { categoryService } from "./categoryService";
 import { FileHelper } from "../utils/FileHelper";
 import { toPaginatedList } from "../utils/toPaginatedList";
+import { ProductDto } from "../dto/productDto";
+import { Favorite } from "../entities/favorite";
+import { Review } from "../entities/review";
 
 class ProductService {
   readonly productRepo: Repository<Product>;
@@ -14,13 +17,28 @@ class ProductService {
     this.productRepo = shopDataSource.getRepository(Product);
   }
 
-  async getAll(page: number, limit: number) {
-    const [products, total] = await this.productRepo.findAndCount({
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+  async getAll(userId: number, page: number, limit: number) {
+    const products = await this.productRepo
+      .createQueryBuilder("product")
+      .select(`product.*, f.id as "isFavorite"`)
+      .leftJoin(
+        (qb) =>
+          qb.from(Favorite, "favorite").where("favorite.userId = :id", {
+            id: userId,
+          }),
+        "f",
+        `"f"."productId" = product.id`
+      )
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getRawMany();
+    const total = await this.productRepo.count();
 
-    return toPaginatedList(products, total, page, limit);
+    const productDtos = products.map(
+      (p) => new ProductDto({ ...p, isFavorite: !!p.isFavorite })
+    );
+
+    return toPaginatedList(productDtos, total, page, limit);
   }
 
   async getOne(id: number) {
@@ -32,6 +50,22 @@ class ProductService {
       throw ApiError.BadRequest(`No product with id ${id}`);
     }
     return product;
+  }
+
+  async getUserFavorites(userId: number, page: number, limit: number) {
+    const [products, total] = await this.productRepo.findAndCount({
+      relations: {
+        favorites: true,
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+      where: { favorites: { userId } },
+    });
+    const productDtos = products.map(
+      (p) => new ProductDto({ ...p, isFavorite: true })
+    );
+
+    return toPaginatedList(productDtos, total, page, limit);
   }
 
   async getByIds(ids: number[]) {

@@ -8,12 +8,16 @@ import {
 import { validationResult } from "express-validator";
 import { ApiError } from "../exceptions/apiError";
 import { FileHelper } from "../utils/FileHelper";
+import { RequestAssertions } from "../utils/assertions/requestAssertions";
 
 class ProductController {
-  async getAll(req: PaginatedRequest, res: Response, next: NextFunction) {
+  async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const { page = 1, limit = 10 } = req.query;
-      const products = await productService.getAll(page, limit);
+      RequestAssertions.assertIsRequestWithUser(req);
+      const { id } = req.user;
+      const { page = 1, limit = 10 } = (req as unknown as PaginatedRequest)
+        .query;
+      const products = await productService.getAll(id, page, limit);
       res.status(200).json(products);
     } catch (err) {
       next(err);

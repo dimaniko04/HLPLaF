@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "./order";
 import { Review } from "./review";
+import { Favorite } from "./favorite";
 
 @Entity()
 export class User {
@@ -22,4 +23,9 @@ export class User {
     cascade: true,
   })
   reviews: Review[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.user, {
+    cascade: true,
+  })
+  favorites: Favorite[];
 }

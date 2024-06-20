@@ -4,6 +4,7 @@ import productRoute from "./productRoute";
 import authRoute from "./authRoute";
 import orderRoute from "./orderRoute";
 import reviewRoute from "./reviewRoute";
+import favoriteRoute from "./favoriteRoute";
 
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { recommendationController } from "../controllers/recommendationController";
@@ -20,5 +21,6 @@ router.use(
   recommendationController.getUserRecommendations
 );
 router.use("/product", authMiddleware, reviewRoute);
+router.use("/favorite", authMiddleware, favoriteRoute);
 
 export default router;

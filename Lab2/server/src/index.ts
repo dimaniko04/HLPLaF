@@ -29,7 +29,9 @@ app.use(exceptionMiddleware);
 const start = async () => {
   try {
     await shopDataSource.initialize();
-    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+    app.listen(PORT, "192.168.31.54", () =>
+      console.log(`Server started on port ${PORT}`)
+    );
   } catch (error) {
     console.error(error);
   }
