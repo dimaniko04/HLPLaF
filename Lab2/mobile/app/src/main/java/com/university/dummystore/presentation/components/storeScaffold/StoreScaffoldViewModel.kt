@@ -67,6 +67,12 @@ class StoreScaffoldViewModel @Inject constructor(
             when(checkoutResult) {
                 is ApiResult.Success -> {
                     callback()
+                    EventBus.sendEvent(
+                        Event.UpdateRecommendationsEvent
+                    )
+                    EventBus.sendEvent(
+                        Event.UpdateOrdersEvent
+                    )
                 }
                 is ApiResult.Error -> {
                     EventBus.sendEvent(

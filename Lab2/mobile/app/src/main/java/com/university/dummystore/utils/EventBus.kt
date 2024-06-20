@@ -15,4 +15,7 @@ object EventBus {
 sealed interface Event {
     data class SnackbarEvent(val message: String): Event
     data class NavigateEvent(val route: String): Event
+    data object UpdateRecommendationsEvent: Event
+    data object UpdateFavoritesEvent: Event
+    data object UpdateOrdersEvent: Event
 }

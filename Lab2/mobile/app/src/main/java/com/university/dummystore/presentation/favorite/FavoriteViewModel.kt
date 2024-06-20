@@ -23,6 +23,7 @@ class FavoriteViewModel @Inject constructor(
     var state by mutableStateOf(ProductListState())
 
     init {
+        fetchRecommendations()
         fetchFavorites()
     }
 
@@ -38,7 +39,11 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    private fun fetchFavorites() {
+    fun toFirstPage() {
+        state = state.copy(page = 1)
+    }
+
+    fun fetchFavorites() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
 
@@ -55,6 +60,31 @@ class FavoriteViewModel @Inject constructor(
                         state = state.copy(
                             hasNext = it.page < it.pageCount,
                             products = state.products + it.items
+                        )
+                    }
+                }
+                is ApiResult.Error -> {
+                    EventBus.sendEvent(
+                        Event.SnackbarEvent(fetchResult.error!!.message)
+                    )
+                }
+            }
+        }
+    }
+
+    fun fetchRecommendations() {
+        viewModelScope.launch {
+            state = state.copy(isLoadingRecommendations = true)
+
+            val fetchResult = productUseCases.fetchRecommendations()
+
+            state = state.copy(isLoadingRecommendations = false)
+
+            when(fetchResult) {
+                is ApiResult.Success -> {
+                    fetchResult.data?.let {
+                        state = state.copy(
+                            recommendations = it
                         )
                     }
                 }

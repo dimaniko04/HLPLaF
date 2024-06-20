@@ -1,5 +1,6 @@
 package com.university.dummystore.presentation.orders
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +18,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +33,8 @@ import com.university.dummystore.domain.model.Order
 import com.university.dummystore.domain.model.OrderDetail
 import com.university.dummystore.presentation.components.storeScaffold.StoreScaffold
 import com.university.dummystore.utils.Constants
+import com.university.dummystore.utils.Event
+import com.university.dummystore.utils.EventBus
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -38,7 +43,13 @@ fun OrdersScreen(
     navController: NavController,
     viewModel: OrderViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val state = viewModel.state
+
+    LaunchedEffect(key1 = context, viewModel) {
+        viewModel.toFirstPage()
+        viewModel.fetchOrders()
+    }
 
     StoreScaffold(
         title = "Order history",

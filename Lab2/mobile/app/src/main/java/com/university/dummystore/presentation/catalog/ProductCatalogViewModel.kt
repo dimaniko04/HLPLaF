@@ -36,6 +36,11 @@ class ProductCatalogViewModel @Inject constructor(
             }
             is ProductListEvent.ToggleFavorite -> {
                 toggleFavorite(event.product)
+                viewModelScope.launch {
+                    EventBus.sendEvent(
+                        Event.UpdateFavoritesEvent
+                    )
+                }
             }
         }
     }
@@ -69,7 +74,7 @@ class ProductCatalogViewModel @Inject constructor(
         }
     }
 
-    private fun fetchRecommendations() {
+    fun fetchRecommendations() {
         viewModelScope.launch {
             state = state.copy(isLoadingRecommendations = true)
 

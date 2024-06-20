@@ -24,15 +24,19 @@ class OrderViewModel @Inject constructor(
     var state by mutableStateOf(OrderState())
 
     init {
-        fetchProducts()
+        fetchOrders()
+    }
+
+    fun toFirstPage() {
+        state = state.copy(page = 1, orders = listOf())
     }
 
     fun loadMore() {
         state = state.copy(page = state.page + 1)
-        fetchProducts()
+        fetchOrders()
     }
 
-    private fun fetchProducts() {
+    fun fetchOrders() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
 
